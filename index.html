@@ -7,12 +7,14 @@
   <body>
     <h1>猜數字遊戲</h1>
     <p>
-      <span id="lowerbound">1</span>到<span id="upperbound">100</span
+      <span class="lowerbound">1</span>到<span class="upperbound">100</span
       >之間的數字，你猜是多少？
     </p>
     <input type="text" id="guessField" />
     <input type="submit" value="猜!" id="guessSubmit" />
+    <input type="button" value="揭曉答案" id="getAnswer">
     <p class="message"></p>
+    <p class="showAnswer"></p>
   </body>
   <script>
     // Random number
@@ -23,51 +25,69 @@
     const guessField = document.getElementById("guessField");
     const guessSubmit = document.getElementById("guessSubmit");
     const message = document.querySelector(".message");
-    const lowerbound = document.querySelector("lowerbound");
-    const upperbound = document.querySelector("upperbound");
-
-    // Event listener
+    const lowerbound = document.querySelector(".lowerbound");
+    const upperbound = document.querySelector(".upperbound");
+    const getAnswer = document.getElementById("getAnswer");
+    const showAnswer = document.querySelector(".showAnswer");
+    // 取得計算次數的元素
+    const clickableElement = document.getElementById("guessSubmit");
+    
+   // Event listener
     guessSubmit.addEventListener("click", checkGuess);
+    // 取得答案
+    getAnswer.addEventListener("click" ,show);
+    // 計算點擊次數的DOM
+    guessSubmit.addEventListener("click", clickCountFunction);
+
+
+    // 追蹤點擊次數
+    let clickCount = 0;
+
+    // 計算點擊次數
+    function clickCountFunction() {
+      clickCount++;
+      console.log("點擊次數:" + clickCount);
+     }
 
     // Guess function
     function checkGuess() {
+
       const userGuess = parseInt(guessField.value);
       console.log("userGuess: " + userGuess);
 
       // 設定猜出結果的次數
-      const countNumber = "你這次猜了" + clickCount + "次哦~";
+      const countNumber = `你這次猜了 ${clickCount}次哦~`;
 
       if (userGuess === targetNumber) {
-        message.textContent = `恭喜你，你猜對了！` + countNumber;
+        message.textContent = `恭喜你，你猜對了！ ${countNumber}`;
         message.style.color = "green";
         guessSubmit.disabled = true;
       } else if (userGuess < targetNumber) {
         message.textContent = "太小了，再試一次。";
         message.style.color = "red";
-        upperbound.textcontent = userGuess;
+        document.querySelector(".lowerbound").textContent = userGuess;
       } else {
-        message.textcontent = "太大了，再試一次。";
+        message.textContent = "太大了，再試一次。";
         message.style.color = "red";
-        lowerbound.textcontent = userGuess;
+        document.querySelector(".upperbound").textContent = userGuess;
       }
+
+      if (clickCount >= 4 && userGuess !== targetNumber){
+        message.innerHTML =`You Failed! 答案是 ${targetNumber}`;
+        message.style.color = "red";
+        guessSubmit.disabled = true;
+      }
+
 
       guessField.value = "";
       guessField.focus();
     }
 
-    // 追蹤點擊次數
-    let clickCount = 0;
-
-    // 點擊次數處理
-    function clickCountFunction() {
-      clickCount++;
-      console.log("點擊次數:" + clickCount);
-    }
-
-    //製作連結點擊按鈕的函式
-    const clickableElement = document.getElementById("guessSubmit");
-    // 在點擊時會觸發計次的功能
-    clickableElement.addEventListener("click", clickCountFunction);
+    // 揭曉答案
+    function show(){
+        showAnswer.textContent = targetNumber;
+        showAnswer.style.color = "blue";
+    } 
     
   </script>
 </html>
