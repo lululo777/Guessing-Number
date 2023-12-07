@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <title>猜數字遊戲</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>猜數字遊戲</h1>
+    <p>
+      <span id="lowerbound">1</span>到<span id="upperbound">100</span
+      >之間的數字，你猜是多少？
+    </p>
+    <input type="text" id="guessField" />
+    <input type="submit" value="猜!" id="guessSubmit" />
+    <p class="message"></p>
+  </body>
+  <script>
+    // Random number
+    const targetNumber = Math.floor(Math.random() * 100) + 1;
+    console.log("answer: " + targetNumber);
+
+    // Get element
+    const guessField = document.getElementById("guessField");
+    const guessSubmit = document.getElementById("guessSubmit");
+    const message = document.querySelector(".message");
+    const lowerbound = document.querySelector("lowerbound");
+    const upperbound = document.querySelector("upperbound");
+
+    // Event listener
+    guessSubmit.addEventListener("click", checkGuess);
+
+    // Guess function
+    function checkGuess() {
+      const userGuess = parseInt(guessField.value);
+      console.log("userGuess: " + userGuess);
+
+      // 設定猜出結果的次數
+      const countNumber = "你這次猜了" + clickCount + "次哦~";
+
+      if (userGuess === targetNumber) {
+        message.textContent = `恭喜你，你猜對了！` + countNumber;
+        message.style.color = "green";
+        guessSubmit.disabled = true;
+      } else if (userGuess < targetNumber) {
+        message.textContent = "太小了，再試一次。";
+        message.style.color = "red";
+        upperbound.textcontent = userGuess;
+      } else {
+        message.textcontent = "太大了，再試一次。";
+        message.style.color = "red";
+        lowerbound.textcontent = userGuess;
+      }
+
+      guessField.value = "";
+      guessField.focus();
+    }
+
+    // 追蹤點擊次數
+    let clickCount = 0;
+
+    // 點擊次數處理
+    function clickCountFunction() {
+      clickCount++;
+      console.log("點擊次數:" + clickCount);
+    }
+
+    //製作連結點擊按鈕的函式
+    const clickableElement = document.getElementById("guessSubmit");
+    // 在點擊時會觸發計次的功能
+    clickableElement.addEventListener("click", clickCountFunction);
+  </script>
+</html>
