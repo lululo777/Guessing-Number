@@ -125,9 +125,7 @@
     }
     // delaydisplay function
     function delayedDisplay(string, ms, callback){
-        setTimeout(() => {
-        callback(string);
-    }, ms);
+        setTimeout(function(){callback(string);}, ms);
      
     }
     
