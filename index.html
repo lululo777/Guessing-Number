@@ -81,6 +81,7 @@
         message.innerHTML =`You Failed! 答案是 ${targetNumber}`;
         message.style.color = "red";
         guessSubmit.disabled = true;
+        setTimeout(reset ,5000);
       }
 
       guessField.value = "";
